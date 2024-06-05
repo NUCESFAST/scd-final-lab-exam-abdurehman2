@@ -6,47 +6,22 @@ services:
       - "3151:3151"
     volumes:
       - ./Images
-    environment:
-      - REACT_APP_AUTH_URL=http://auth:4151
-      - REACT_APP_CLASSROOMS_URL=http://classrooms:4152
-      - REACT_APP_EVENTS_URL=http://events:4153
-      - REACT_APP_POSTS_URL=http://post:4154
   auth_backend:
     build: ./Auth
     ports:
       - "4151:4151"
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/
-      - EVENT_SERVICE_URI=http://events:4151
-    depends_on:
-      - mongo
   classrooms_backend:
     build: ./Classrooms
     ports:
       - "4152:4152"
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/
-      - EVENT_SERVICE_URI=http://events:4152
-    depends_on:
-      - mongo
   event-bus_backend:
     build: ./event-bus
     ports:
       - "4153:4153"
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/
-      - EVENT_SERVICE_URI=http://events:4153
-    depends_on:
-      - mongo
   post_backend:
     build: ./Post
     ports:
       - "4154:4154"
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/
-      - EVENT_SERVICE_URI=http://events:4154
-    depends_on:
-      - mongo
   db:
     image: mongo
     volumes:
