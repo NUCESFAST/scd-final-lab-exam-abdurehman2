@@ -1,41 +1,28 @@
 pipeline {
-    agent any
+    agent any  // This specifies that Jenkins can run this pipeline on any available agent
 
     environment {
-        // Replace with your Docker Hub username and repository
-        DOCKER_HUB_USERNAME = 'abdurehman20'
-        DOCKER_HUB_REPO = 'abdurehman20/scd_final_exam'
-        DOCKER_IMAGE = "${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPO}"
+        DOCKER_HUB_CREDENTIALS_ID = '12345678'  // ID of your Docker Hub credentials stored in Jenkins
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                // Checks out the code from the GitHub repository
-                git 'https://github.com/NUCESFAST/scd-final-lab-exam-abdurehman2.git'
+                git branch: 'master', url:'https://github.com/NUCESFAST/scd-final-lab-exam-abdurehman2.git'
             }
         }
 
-        stage('Build Docker images') {
+        stage('Build and Push Docker Images') {
             steps {
-                // Builds the Docker images using docker-compose
-                sh 'docker-compose build'
-            }
-        }
-
-        stage('Login to Docker Hub') {
-            steps {
-                // Logs in to Docker Hub
-                withCredentials([usernamePassword(credentialsId: 'dockerHubCredentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-                    sh 'echo "${DOCKER_HUB_PASSWORD}" | docker login -u "${DOCKER_HUB_USERNAME}" --password-stdin'
+                script {
+                    // Login to Docker Hub
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS_ID) {
+                        // Build the Docker images
+                        sh 'docker-compose build'
+                        // Push the Docker images to Docker Hub
+                        sh 'docker-compose push'
+                    }
                 }
-            }
-        }
-
-        stage('Push Docker images') {
-            steps {
-                // Tags and pushes the Docker images to Docker Hub
-                sh "docker-compose push"
             }
         }
     }
