@@ -2,7 +2,7 @@ pipeline {
     agent any  
 
     environment {
-        DOCKER_HUB_CREDENTIALS_ID = 'abdurehman2.0'  // ID of your Docker Hub credentials stored in Jenkins
+        DOCKER_HUB_CREDENTIALS_ID = 'abdurehman20'  // ID of your Docker Hub credentials stored in Jenkins
     }
 
     stages {
