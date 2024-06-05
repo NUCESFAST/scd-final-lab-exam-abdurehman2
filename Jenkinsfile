@@ -1,8 +1,8 @@
 pipeline {
-    agent any  // This specifies that Jenkins can run this pipeline on any available agent
+    agent any  
 
     environment {
-        DOCKER_HUB_CREDENTIALS_ID = '12345678'  // ID of your Docker Hub credentials stored in Jenkins
+        DOCKER_HUB_CREDENTIALS_ID = 'abdurehman20'  // ID of your Docker Hub credentials stored in Jenkins
     }
 
     stages {
